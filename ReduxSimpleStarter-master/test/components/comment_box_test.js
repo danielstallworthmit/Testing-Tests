@@ -15,4 +15,16 @@ describe('CommentBox', () => {
     it('has a button', () => {
         expect(component.find('button')).to.exist;
     });
+    describe('Comment box text input', () => {
+        beforeEach(() => {
+            component.find('textarea').simulate('change', 'new comment');
+        });
+        it('can put text in the textarea', () => {
+            expect(component.find('textarea')).to.have.value('new comment');
+        })
+        it('clears text from textarea when submitted', () => {
+            component.simulate('submit');
+            expect(component.find('textarea')).to.have.value('');
+        });
+    })
 });

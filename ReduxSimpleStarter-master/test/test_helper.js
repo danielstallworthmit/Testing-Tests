@@ -12,10 +12,11 @@ import chaiJquery from 'chai-jquery';
 // Set up environment to run browser in the command line
 global.document = jsdom.jsdom('<!doctype html><html><body></body></html>');
 global.window = global.document.defaultView;
-const $ = jquery(global.window);
+global.navigator = global.window.navigator;
+const $ = jquery(window);
 
 //  Build 'renderComponent' helper to render a given react class
-const renderComponent = (ComponentClass, props, state) => {
+const renderComponent = (ComponentClass, props = {}, state = {}) => {
   const componentInstance = TestUtils.renderIntoDocument(
     <Provider store={createStore(reducers, state)}>
       <ComponentClass {...props} />
@@ -25,7 +26,10 @@ const renderComponent = (ComponentClass, props, state) => {
 }
 
 // Build helper for simulating events
-$.fn.simulate = (eventName, value) => {
+$.fn.simulate = function(eventName, value) {
+  if (value) {
+    this.val(value);
+  }
   TestUtils.Simulate[eventName](this[0]);
 }
 
